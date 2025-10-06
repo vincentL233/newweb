@@ -1,13 +1,4 @@
-/*
-Red Lantern redesign
-HFWD Chapter 1
-*/
 
-/*
-The font size here is set to 62.5% so that
-1em = 10px. This makes adjusting our typography
-a little easier
-*/
 body {
 	margin: 0 auto;
 	width: 800px;
@@ -60,23 +51,6 @@ span.amp {
 	float: left;
 }
 
-#nav {
-	float: right;
-	margin: 50px 10px 0 0;
-	font-size: 1.4em;
-}
-
- 
-#nav li {
-	display: inline;
-	margin: 0 0 0 20px;
-}
-
-#nav li a {
-	color: #fff;
-	text-decoration: none;
-	background: none;
-}
 
 /*
 Because the header content is outside the wrap <div>,
@@ -87,7 +61,6 @@ the layout
 	clear: both;
 	margin: 0 auto;
 	padding: 10px;
-	width: 800px;
 	background: #fff;
 	border: 10px solid #5c0505;
 }
