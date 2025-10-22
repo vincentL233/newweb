@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+        src="https://unpkg.com/vue@3/dist/vue.global.js">
+    </script>
+</head>
+<body>
+    <div id="myapp1">
+        
+        {{msg}}
+        <div>
+            {{msg2}}
+        </div>
+        <img v-bind:src="msg2" alt="">
+        <!--<img :src="msg2" alt="">-->
+        <img :src="`images/${msg2}`" alt="">
+        <img :src="'images/' + msg2">
+    </div>
+    
+    <button>click</button>
+</body>
+<script>
+    var vueApp=Vue.createApp({
+        data(){
+            return{
+                msg:"hello!",
+                msg2:"tokyo.jpg"
+            }
+        }
+    }).mount("#myapp1")
+</script>
+</html>

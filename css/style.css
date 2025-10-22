@@ -23,14 +23,23 @@ ul {
 	list-style-type: none;
 }
 
-a:link {
-	color: #333;
-	background: #eee;
+.nav-link{
+	color: #FFF;
 }
-a:visited {
-	color: #ff0000;
-	background: #eee;
+
+/* 導航列樣式 */
+.navbar-toggler {
+	border-color: rgba(255, 255, 255, 0.5);
 }
+
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-brand img {
+	filter: brightness(1.2);
+}
+
 
 /* This rule adds a nice style to our ampersands */
 span.amp {
@@ -43,7 +52,7 @@ span.amp {
 #masthead {
 	margin: 0 auto ;
 	margin-top: 20px;
-	width: 800px;
+	max-width: 800px;
 	color: #fff;
 }
 
@@ -78,7 +87,7 @@ the layout
 }
 
 #content, #sidebar {
-	width: 360px;
+	max-width: 360px;
 	margin: 20px 0 20px 0;
 	padding: 10px;
 }
