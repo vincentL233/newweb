@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Genshin Style - Correct Filenames</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #87CEEB; }
+        #ui-layer {
+            position: absolute; bottom: 20%; width: 100%; text-align: center;
+            color: white; font-family: sans-serif; font-size: 24px; letter-spacing: 5px;
+            text-shadow: 0 0 15px rgba(255,255,255,1); pointer-events: none;
+            opacity: 1; transition: opacity 1.5s; animation: floatText 3s ease-in-out infinite;
+        }
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-10px); opacity: 1; }
+        }
+        #white-out {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: white; opacity: 0; pointer-events: none; transition: opacity 3s ease-in;
+        }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">點擊螢幕進入世界</div>
+    <div id="white-out"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x97D1E3, 0.02); 
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.physicallyCorrectLights = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        document.body.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+        
+        const dirLight = new THREE.DirectionalLight(0xffffff, 4.5);
+        dirLight.position.set(5, 50, 20);
+        dirLight.castShadow = true;
+        dirLight.shadow.bias = -0.0005; 
+        scene.add(dirLight);
+
+        const pathGroup = new THREE.Group();
+        scene.add(pathGroup);
+
+        const textureLoader = new THREE.TextureLoader();
+        
+        // ============================================
+        // [修正] 對應你截圖中的實際檔名
+        // ============================================
+        
+        // 1. 顏色 (Diff)
+        const baseColorMap = textureLoader.load('gray_rocks_diff_4k.jpg'); 
+        
+        // 2. 法線 (Nor)
+        const normalMap = textureLoader.load('gray_rocks_nor_dx_4k.jpg');    
+        
+        // 3. 粗糙度 (Rough)
+        const roughnessMap = textureLoader.load('gray_rocks_rough_4k.jpg'); 
+        
+        // 4. 你的資料夾裡沒有 AO 圖，只有 disp (置換圖)
+        // 置換圖需要很高的模型面數才能用，我們先不載入第4張，避免報錯
+        // const aoMap = textureLoader.load('gray_rocks_ao_4k.jpg');        
+
+        // 設定紋理重複
+        const repeatFactor = 3; 
+        // 這裡只處理我們載入的三張圖
+        [baseColorMap, normalMap, roughnessMap].forEach(texture => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(repeatFactor, repeatFactor);
+        });
+
+        const material = new THREE.MeshStandardMaterial({
+            map: baseColorMap,          
+            roughnessMap: roughnessMap, 
+            normalMap: normalMap,
+            // aoMap: aoMap,            // 先拿掉 AO
+            color: 0xffffff,            
+            roughness: 1,               
+            metalness: 0                
+        });
+
+        const geometry = new THREE.BoxGeometry(5, 0.4, 5); 
+
+        const blocks = [];
+        const blockCount = 40; 
+        const distanceBetween = 5; 
+        const totalLength = blockCount * distanceBetween;
+
+        for(let i = 0; i < blockCount; i++) {
+            const block = new THREE.Mesh(geometry, material);
+            block.position.z = -i * distanceBetween;
+            block.position.y = -25; 
+            block.visible = false; 
+            
+            block.userData = {
+                angle: i * 0.1, 
+                finalZ: -i * distanceBetween 
+            };
+
+            block.castShadow = true;
+            block.receiveShadow = true;
+            pathGroup.add(block);
+            blocks.push(block);
+        }
+
+        const doorGroup = new THREE.Group();
+        const pillarGeo = new THREE.BoxGeometry(1.5, 18, 1.5);
+        const pillarMat = new THREE.MeshStandardMaterial({ color: 0xdcdcdc, roughness: 0.2 });
+        const leftPillar = new THREE.Mesh(pillarGeo, pillarMat);
+        leftPillar.position.set(-3.5, 9, 0);
+        const rightPillar = new THREE.Mesh(pillarGeo, pillarMat);
+        rightPillar.position.set(3.5, 9, 0);
+        const doorLightGeo = new THREE.PlaneGeometry(7, 18);
+        const doorLightMat = new THREE.MeshBasicMaterial({ color: 0xfff5cc, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+        const doorLight = new THREE.Mesh(doorLightGeo, doorLightMat);
+        doorLight.position.set(0, 9, 0);
+        doorGroup.add(leftPillar, rightPillar, doorLight);
+        scene.add(doorGroup);
+        doorGroup.visible = false;
+
+        camera.position.set(0, 6, 12); 
+        camera.rotation.x = -0.15; 
+
+        let isRunning = true;
+        let isEntering = false;
+        let speed = 0.08; 
+        const riseThreshold = 30; 
+        const deepLevel = -30;    
+        const riseSpeed = 0.05; 
+        const slideDistance = 20; 
+
+        const clock = new THREE.Clock();
+
+        window.addEventListener('mousedown', () => {
+            if (!isRunning) return;
+            isRunning = false;
+            isEntering = true;
+            document.getElementById('ui-layer').style.opacity = 0;
+            doorGroup.position.z = camera.position.z - 80; 
+            doorGroup.position.y = -40;
+            doorGroup.visible = true;
+            const raiseDoor = () => {
+                doorGroup.position.y += (0 - doorGroup.position.y) * 0.015;
+                if(Math.abs(doorGroup.position.y) > 0.1) {
+                    requestAnimationFrame(raiseDoor);
+                }
+            };
+            raiseDoor();
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            if (isRunning) {
+                camera.position.z -= speed;
+
+                blocks.forEach((block) => {
+                    if (block.userData.finalZ > camera.position.z + 10) {
+                        block.userData.finalZ -= totalLength; 
+                        block.position.y = deepLevel; 
+                        block.visible = false;
+                    }
+
+                    const distAhead = camera.position.z - block.userData.finalZ;
+                    let targetY;
+                    const waveHeight = Math.sin(time * 0.5 + block.userData.angle) * 0.3;
+
+                    if (distAhead > riseThreshold) {
+                        targetY = deepLevel;
+                        block.position.y += (targetY - block.position.y) * 0.15;
+                        block.visible = false; 
+                    } else {
+                        targetY = waveHeight; 
+                        block.position.y += (targetY - block.position.y) * riseSpeed;
+                        block.visible = true;
+                    }
+
+                    let depthRatio = (block.position.y - waveHeight) / (deepLevel - waveHeight);
+                    if (depthRatio < 0) depthRatio = 0; 
+                    if (depthRatio > 1) depthRatio = 1;
+                    const zOffset = depthRatio * slideDistance;
+
+                    block.position.z = block.userData.finalZ + zOffset;
+                });
+
+                camera.position.y = 6 + Math.sin(time * 0.5) * 0.2;
+
+            } else if (isEntering) {
+                speed += 0.003; 
+                if(speed > 1.6) speed = 1.6;
+                camera.position.z -= speed;
+                camera.position.y += (9 - camera.position.y) * 0.03; 
+                camera.rotation.x += (0 - camera.rotation.x) * 0.03;
+                blocks.forEach(block => {
+                    const waveHeight = Math.sin(time * 0.5 + block.userData.angle) * 0.3;
+                    block.position.y += (waveHeight - block.position.y) * 0.1;
+                    block.position.z = block.userData.finalZ; 
+                    block.visible = true; 
+                });
+                const dist = Math.abs(camera.position.z - doorGroup.position.z);
+                if (dist < 18) {
+                    document.getElementById('white-out').style.opacity = 1;
+                }
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
