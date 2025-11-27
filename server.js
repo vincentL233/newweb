@@ -3,6 +3,12 @@ var bodyParser = require('body-parser');
 var server = express();
 
 var DB=require("nedb-promises");
+
+var fileupload = require('express-fileupload');
+
+server.set('view engine', 'ejs');
+server.set("views", __dirname + "/view");
+
 var ServerDB = DB.create(__dirname + "/Service.db");
 var portfolioDB = DB.create(__dirname + "/portfolio.db");
 var contactDB = DB.create(__dirname + "/contact.db");
@@ -27,6 +33,7 @@ server.use(bodyParser.urlencoded({extended: true}));
 server.get("/",(req,res)=>{
     res.send("Hello World");
 })
+server.use(fileupload({limits:{fileSize: 2 * 1024 * 1024}}));
 server.get("/services",(req,res)=>{
     // var services = [
     //     {icon:'fa-shopping-cart', title:'E-Commerce', text:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur porro laborum fuga repellat necessitatibus corporis nulla, in ex velit recusandae obcaecati maiores, doloremque quisquam similique, tempora aspernatur eligendi delectus! Rem.'},
@@ -35,6 +42,13 @@ server.get("/services",(req,res)=>{
     //  ];
     ServerDB.find({},{"_id":0}).then(results=>{
         res.json(results);
+    }).catch(err=>{
+        console.log(err);
+    })
+});
+server.get("/showService",(req,res)=>{
+    ServerDB.find({},{"_id":0}).then(results=>{
+        res.render("service",{Services:results});
     }).catch(err=>{
         console.log(err);
     })
@@ -67,9 +81,18 @@ server.post("/contact",(req,res)=>{
     // var message = req.body.message;
     // console.log(`name: ${name}, email: ${email}, phone: ${phone}, message: ${message}`);
     // res.send("Thank you for contacting us!");
-    contactDB.insert(req.body).then(()=>{
-        res.send("Thank you for contacting us!");
-    })
+    // contactDB.insert(req.body).then(()=>{
+    //     res.send("Thank you for contacting us!");
+    // });
+    contactDB.insert(req.body);
+    var upfile =req.files.myFile1;
+    upfile.mv(__dirname + "/public/uploads/" + upfile.name,function(err){
+        if(err==null){
+            res.render("msg",{message:"I got a file " + upfile.name});
+        }else{
+            res.render("msg",{message:err});
+        }
+    });
 });
 
 server.listen(8080);
