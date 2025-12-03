@@ -4,8 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    header {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    }
+    header img{
+        position: absolute;
+        left: 0;
+        top:0;
+        width: 100%;
+    } 
+    #title {
+        color: white;
+        font-size: 5rem;
+        z-index: 10;
+    }
+</style>
 <body>
-    
+    <header>
+        <img id="bg" src="img/bg.jpg" alt="">
+        <h2 id="title">Mountains</h2>
+        <img src="img/man.png" alt="img/man.png">
+        <img src="img/clouds_1.png" alt="img/clouds_1.png">
+        <img src="img/clouds_2.png" alt="img/clouds_2.png">
+        <img id="left" src="img/mountain_left.png" alt="img/mountain_left.png">
+        <img id="right" src="img/mountain_right.png" alt="img/mountain_right.png">
+    </header>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia vero numquam dicta repudiandae id quibusdam aperiam beatae nam accusamus aspernatur vel blanditiis quaerat odio, eius facilis perferendis quidem sapiente expedita consequatur aut aliquam quas, cum porro? Voluptatibus laborum rerum dolore illum sit cumque quas optio eveniet iure necessitatibus dignissimos quasi, nisi alias? Dignissimos, blanditiis distinctio. Eum voluptatibus nobis nostrum provident maiores ipsam error adipisci porro deleniti voluptate. Minima, adipisci? Molestias odit recusandae minima, voluptatum quisquam dolorum voluptates impedit blanditiis ducimus praesentium architecto temporibus velit. Reiciendis possimus, dolore vel fugit soluta accusamus in, aperiam eveniet vero, rerum deleniti. Modi dicta ea veniam sint, ratione eligendi, recusandae quidem itaque labore quo assumenda incidunt consequatur! Illum, ipsum quam. Porro delectus tenetur aliquid enim natus architecto iste molestiae autem dolorum. Sed optio asperiores voluptatibus enim necessitatibus, velit vero sapiente veniam debitis minima blanditiis quia nam quaerat facere nihil vitae dolore numquam neque, possimus excepturi provident vel nobis nostrum? Voluptates laudantium quia voluptate recusandae numquam. Veniam, quia laborum! Harum at autem incidunt enim esse veniam cupiditate laboriosam, voluptatem id commodi illum ipsa nihil! Dolorem, cumque? Vitae obcaecati corporis iure quis cumque. Quis excepturi ex dignissimos eum nobis! Odit vitae dicta molestias excepturi sapiente aperiam!</p>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script>
+    gsap.to("#bg",{scale:2,duration:3});
+    gsap.to("#man",{scale:0.5,duration:1,transformOrigin:50});
+    gsap.to("#left",{x:-200,duration:3});
+    gsap.to("#right",{x:200,duration:3});
+    gsap.to("#bg",
+        {
+            scrollTrigger:{
+                trigger:"#title",
+                start:"top 200px",
+                end:"top 100px",
+                scrub:true,
+                markers:true,
+            },
+            scale:2,
+            duration:3
+        }
+    )
+</script>
+
 </html>
