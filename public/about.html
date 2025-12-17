@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About</title>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
+    <!-- MotionPathHelper 是 Club GSAP 付費插件，免費 CDN 通常無法使用。如果你有該檔案，請改為引用本地路徑 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/MotionPathHelper.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/MotionPathPlugin.min.js"></script>
 </head>
 <style>
-    *{
+    * {
         margin: 0;
         padding: 0;
     }
+
     header {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
-    header img{
+
+    header img {
         position: absolute;
         left: 0;
-        top:0;
+        top: 0;
         width: 100%;
-    } 
+    }
+
     #title {
         color: white;
         font-size: 5rem;
         z-index: 10;
     }
+
+    #box {
+        position: relative;
+        display: flex;
+        height: 100px;
+        width: 100px;
+        background-color: blueviolet;
+        border-radius: 50%;
+    }
 </style>
+
 <body>
     <header>
         <img id="bg" src="img/bg.jpg" alt="">
@@ -42,29 +59,75 @@
         <img id="left" src="img/mountain_left.png" alt="img/mountain_left.png">
         <img id="right" src="img/mountain_right.png" alt="img/mountain_right.png">
     </header>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia vero numquam dicta repudiandae id quibusdam aperiam beatae nam accusamus aspernatur vel blanditiis quaerat odio, eius facilis perferendis quidem sapiente expedita consequatur aut aliquam quas, cum porro? Voluptatibus laborum rerum dolore illum sit cumque quas optio eveniet iure necessitatibus dignissimos quasi, nisi alias? Dignissimos, blanditiis distinctio. Eum voluptatibus nobis nostrum provident maiores ipsam error adipisci porro deleniti voluptate. Minima, adipisci? Molestias odit recusandae minima, voluptatum quisquam dolorum voluptates impedit blanditiis ducimus praesentium architecto temporibus velit. Reiciendis possimus, dolore vel fugit soluta accusamus in, aperiam eveniet vero, rerum deleniti. Modi dicta ea veniam sint, ratione eligendi, recusandae quidem itaque labore quo assumenda incidunt consequatur! Illum, ipsum quam. Porro delectus tenetur aliquid enim natus architecto iste molestiae autem dolorum. Sed optio asperiores voluptatibus enim necessitatibus, velit vero sapiente veniam debitis minima blanditiis quia nam quaerat facere nihil vitae dolore numquam neque, possimus excepturi provident vel nobis nostrum? Voluptates laudantium quia voluptate recusandae numquam. Veniam, quia laborum! Harum at autem incidunt enim esse veniam cupiditate laboriosam, voluptatem id commodi illum ipsa nihil! Dolorem, cumque? Vitae obcaecati corporis iure quis cumque. Quis excepturi ex dignissimos eum nobis! Odit vitae dicta molestias excepturi sapiente aperiam!</p>
+    <div id="box"></div>
+     <svg id="path0" width="100%" height="100%" viewBox="0 0 2795 588" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
+        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <g transform="matrix(1,0,0,1,-141,-562.374281)">
+            <g transform="matrix(1,0,0,1,-111,79)">
+                <path id="actualPath"
+                    d="M252,862C252,862 495.559,513.163 734,701C972.441,888.837 701.53,1105.114 963,1059C1224.47,1012.886 1636.407,1178.958 1617,926C1597.593,673.042 1567.735,434.614 1866,492C2164.265,549.386 2212.854,1081.845 2391,966C2569.146,850.155 3047,676 3047,676C3047,676 2712.272,449.026 2894,629"
+                    style="fill:none;stroke: black;" />
+            </g>
+        </g>
+    </svg>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Natus unde sint fuga voluptates laboriosam dolore quos quas impedit, expedita, numquam quam delectus sit eos debitis amet blanditiis ipsa porro rerum nisi asperiores! Eos quibusdam repellendus amet voluptatibus asperiores ipsum qui cumque quo voluptate? Eos ex porro sequi, nemo totam provident. Quibusdam vero maiores, vitae doloribus voluptatum ut iure quod totam natus. Ex, obcaecati, sit consequuntur ipsa ratione accusantium optio dolorum officiis officia debitis recusandae, eum id quod at impedit quae nostrum nulla nam sapiente deleniti! Ad, voluptates corrupti, similique quo itaque, aliquid dolorum molestias dolore explicabo incidunt quisquam debitis perferendis.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione laborum, eligendi voluptate nulla assumenda corporis, eius nisi necessitatibus, quaerat dicta sed eaque fuga quae tempore atque veniam fugiat mollitia vitae!</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia vero numquam dicta repudiandae id quibusdam
+        aperiam beatae nam accusamus aspernatur vel blanditiis quaerat odio, eius facilis perferendis quidem sapiente
+        expedita consequatur aut aliquam quas, cum porro? Voluptatibus laborum rerum dolore illum sit cumque quas optio
+        eveniet iure necessitatibus dignissimos quasi, nisi alias? Dignissimos, blanditiis distinctio. Eum voluptatibus
+        nobis nostrum provident maiores ipsam error adipisci porro deleniti voluptate. Minima, adipisci? Molestias odit
+        recusandae minima, voluptatum quisquam dolorum voluptates impedit blanditiis ducimus praesentium architecto
+        temporibus velit. Reiciendis possimus, dolore vel fugit soluta accusamus in, aperiam eveniet vero, rerum
+        deleniti. Modi dicta ea veniam sint, ratione eligendi, recusandae quidem itaque labore quo assumenda incidunt
+        consequatur! Illum, ipsum quam. Porro delectus tenetur aliquid enim natus architecto iste molestiae autem
+        dolorum. Sed optio asperiores voluptatibus enim necessitatibus, velit vero sapiente veniam debitis minima
+        blanditiis quia nam quaerat facere nihil vitae dolore numquam neque, possimus excepturi provident vel nobis
+        nostrum? Voluptates laudantium quia voluptate recusandae numquam. Veniam, quia laborum! Harum at autem incidunt
+        enim esse veniam cupiditate laboriosam, voluptatem id commodi illum ipsa nihil! Dolorem, cumque? Vitae obcaecati
+        corporis iure quis cumque. Quis excepturi ex dignissimos eum nobis! Odit vitae dicta molestias excepturi
+        sapiente aperiam!</p>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script>
-    gsap.to("#bg",{scale:2,duration:3});
-    gsap.to("#man",{scale:0.5,duration:1,transformOrigin:50});
-    gsap.to("#left",{x:-200,duration:3});
-    gsap.to("#right",{x:200,duration:3});
+    gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+
+    gsap.to("#bg", { scale: 2, duration: 3 });
+    gsap.to("#man", { scale: 0.5, duration: 1, transformOrigin: 50 });
+    gsap.to("#left", { x: -200, duration: 3 });
+    gsap.to("#right", { x: 200, duration: 3 });
     gsap.to("#bg",
         {
-            scrollTrigger:{
-                trigger:"#title",
-                start:"top 200px",
-                end:"top 100px",
-                scrub:true,
-                markers:true,
+            scrollTrigger: {
+                trigger: "#title",
+                start: "top 200px",
+                end: "top 100px",
+                scrub: true,
+                markers: true,
             },
-            scale:2,
-            duration:3
+            scale: 2,
+            duration: 3
         }
     )
+    gsap.to("#box",
+        {
+            duration:3,
+            motionPath: {
+                path:"#actualPath",
+                align:"#actualPath",
+                alignOrigin:[0.5,0.5],
+                autoRotate:45,
+            },
+            scrollTrigger: {
+                trigger: "#box",
+                start: "top 70%",
+                end: "top 68%",
+                toggleActions: "play reverse restart pause",
+                markers: true,
+            },
+        });
+        // MotionPathHelper.create("#box"); // 需要載入 MotionPathHelper 插件才能使用
 </script>
 
 </html>
